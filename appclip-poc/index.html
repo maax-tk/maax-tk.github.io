@@ -2,77 +2,126 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Customer content — App Clip PoC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nimbus Mobile — Travel data</title>
 
-<!-- Safari Smart App Banner + App Clip card.
-     app-clip-bundle-id  selects the App Clip.
-     app-id              is the parent app's App Store ID; it lets the banner
-                         fall back to the full app on iOS 13 and where Screen
-                         Time or MDM disallow App Clips. There is no App Store
-                         record for this PoC, so it is deliberately absent and
-                         the banner therefore cannot appear.
-     app-clip-display=card shows the App Clip card in Safari on iOS 15+.
-     Apple requires ALL of: association, this tag, a configured default App Clip
-     experience, and a published app version containing the clip. -->
+<!-- Safari Smart App Banner + App Clip card. Apple requires ALL of: the website
+     associated with the clip, this tag, a configured default App Clip
+     experience, and a published app version containing the clip. There is no
+     App Store record for this PoC, so the banner cannot actually appear. -->
 <meta name="apple-itunes-app" content="app-clip-bundle-id=com.lotusflare.appclippoc.Clip, app-clip-display=card">
 
 <style>
-  :root { color-scheme: light dark; }
-  body { margin:0; font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-         background:#0b7285; color:#fff; }
-  .wrap { padding: 28px 20px 60px; max-width: 640px; margin: 0 auto; }
-  .flag { display:inline-block; background:#ffd43b; color:#000; font-weight:800;
-          letter-spacing:.04em; padding:6px 12px; border-radius:999px; font-size:12px; }
-  h1 { font-size: 30px; margin:16px 0 4px; line-height:1.15; }
-  .sub { opacity:.85; margin:0 0 24px; }
-  dl { background:rgba(0,0,0,.25); border-radius:12px; padding:16px; margin:0 0 20px; }
-  dt { font-size:11px; text-transform:uppercase; letter-spacing:.06em; opacity:.7; }
-  dd { margin:2px 0 14px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-       font-size:13px; word-break:break-all; }
-  dd:last-child { margin-bottom:0; }
-  button { font:inherit; font-weight:600; padding:12px 16px; border-radius:10px;
-           border:0; background:#ffd43b; color:#000; margin:0 8px 8px 0; }
-  .note { font-size:13px; opacity:.8; }
+  :root{
+    --ink:#0B0E1C; --ink-2:#141A31; --line:#232B4A;
+    --accent:#FF6547; --text:#EEF1FA; --muted:#8E98B8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--text);
+       font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+       -webkit-text-size-adjust:100%}
+  .wrap{padding:20px 18px 28px;max-width:640px;margin:0 auto}
+
+  .hero{background:linear-gradient(150deg,#1B2245 0%,#101632 60%,#0B0E1C 100%);
+        border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
+  .tag{display:inline-block;background:rgba(255,101,71,.15);color:var(--accent);
+       font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+       padding:5px 10px;border-radius:999px}
+  h1{font-size:30px;line-height:1.1;margin:12px 0 6px;letter-spacing:-.02em}
+  .lede{color:var(--muted);margin:0;font-size:14px}
+
+  .data{display:flex;align-items:baseline;gap:8px;margin:18px 0 4px}
+  .data b{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1}
+  .data span{color:var(--muted);font-size:14px}
+
+  ul.feat{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:9px}
+  ul.feat li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#D3D9EC}
+  ul.feat li::before{content:"";flex:0 0 18px;height:18px;margin-top:1px;border-radius:50%;
+       background:var(--accent);
+       -webkit-mask:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z' fill='%23000'/%3E%3C/svg%3E") center/14px no-repeat;
+               mask:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z' fill='%23000'/%3E%3C/svg%3E") center/14px no-repeat}
+
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+     margin:26px 0 10px;font-weight:700}
+  .card{background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .row{display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-size:14px}
+  .row + .row{border-top:1px solid var(--line)}
+  .row span:first-child{color:var(--muted)}
+  .row span:last-child{text-align:right}
+
+  .cover{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+  .cover div{background:var(--ink-2);border:1px solid var(--line);border-radius:10px;
+             padding:9px 11px;font-size:13px}
+  .fine{color:var(--muted);font-size:12px;margin-top:22px;line-height:1.6}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <span class="flag">REMOTE CONTENT</span>
-  <h1>This page came off the network.</h1>
-  <p class="sub">If you can read this inside the App Clip, the <code>WKWebView</code> loaded a
-     page the native binary knows nothing about. This is the half a customer owns.</p>
 
-  <dl>
-    <dt>Page URL (the content URL)</dt><dd id="href"></dd>
-    <dt>id parameter carried from the invocation URL</dt><dd id="id"></dd>
-    <dt>Rendered at</dt><dd id="ts"></dd>
-    <dt>User agent</dt><dd id="ua"></dd>
-    <dt>Build stamp baked in at deploy</dt><dd>5e71d06 2026-08-25T12:53:49Z</dd>
-  </dl>
+  <div class="hero">
+    <span class="tag" id="tag">Travel eSIM</span>
+    <h1 id="title">Travel 10 GB</h1>
+    <p class="lede" id="lede">Stay connected in 40+ countries. Activates the moment you land.</p>
+    <div class="data"><b id="gb">10</b><span>GB · valid <span id="days">30</span> days</span></div>
+    <ul class="feat">
+      <li>Instant eSIM — no physical SIM, no shop queue</li>
+      <li>Keep your number for calls and messages</li>
+      <li>5G where available, hotspot included</li>
+      <li>No contract, no auto-renewal</li>
+    </ul>
+  </div>
 
-  <!-- Debugging affordances. These exist so the Safari Web Inspector story in
-       docs/FINDINGS.md §3 can be demonstrated on something concrete. -->
-  <button onclick="console.log('[appclip-poc] hello from the customer page', {id:qp('id')})">
-    console.log()
-  </button>
-  <button onclick="throw new Error('[appclip-poc] deliberate uncaught error')">
-    throw
-  </button>
-  <button onclick="fetch('./missing-endpoint.json').then(r=>console.log('status',r.status))">
-    failing fetch()
-  </button>
-  <p class="note">Open Safari &rsaquo; Develop &rsaquo; [device] and pick this page to see the
-     output. Nothing appears unless the App Clip set <code>WKWebView.isInspectable = true</code>.</p>
+  <h2>Plan details</h2>
+  <div class="card">
+    <div class="row"><span>Plan</span><span id="d-plan">Travel 10 GB</span></div>
+    <div class="row"><span>Validity</span><span id="d-days">30 days from activation</span></div>
+    <div class="row"><span>Network</span><span>5G / LTE, partner networks</span></div>
+    <div class="row"><span>Tethering</span><span>Included</span></div>
+    <div class="row"><span>Activation</span><span>Instant, via eSIM</span></div>
+    <div class="row"><span>Offer location</span><span id="d-store">Online</span></div>
+  </div>
+
+  <h2>Where it works</h2>
+  <div class="cover">
+    <div>🇳🇱 Netherlands</div><div>🇩🇪 Germany</div><div>🇫🇷 France</div>
+    <div>🇪🇸 Spain</div><div>🇮🇹 Italy</div><div>🇬🇧 United Kingdom</div>
+    <div>🇿🇦 South Africa</div><div>🇦🇪 UAE</div><div>+32 more</div>
+  </div>
+
+  <p class="fine">
+    Prices include VAT. Speeds may be reduced after the included allowance is used.
+    Coverage depends on partner network availability. Nimbus Mobile is a fictional
+    operator used for an engineering proof of concept.
+  </p>
 </div>
 
 <script>
-  function qp(n){ return new URLSearchParams(location.search).get(n); }
-  document.getElementById('href').textContent = location.href;
-  document.getElementById('id').textContent   = qp('id') ?? '(none)';
-  document.getElementById('ts').textContent   = new Date().toISOString();
-  document.getElementById('ua').textContent   = navigator.userAgent;
-  console.log('[appclip-poc] content page loaded', location.href);
+  // Everything below is driven by the query string, because the invocation URL
+  // is what carries context from the scanned code into this page.
+  var q = new URLSearchParams(location.search);
+  var CATALOGUE = {
+    'travel-3gb':  { title: 'Travel 3 GB',  gb: 3,  days: 7  },
+    'travel-10gb': { title: 'Travel 10 GB', gb: 10, days: 30 },
+    'travel-25gb': { title: 'Travel 25 GB', gb: 25, days: 30 },
+    'daypass':     { title: 'Day Pass',     gb: '∞', days: 1 }
+  };
+  var STORES = {
+    AMS: 'Schiphol T2', LHR: 'Heathrow T5', JNB: 'OR Tambo A', DXB: 'Dubai T3'
+  };
+
+  var plan = CATALOGUE[q.get('plan')] || CATALOGUE['travel-10gb'];
+  var store = q.get('store');
+
+  document.getElementById('title').textContent  = plan.title;
+  document.getElementById('gb').textContent     = plan.gb;
+  document.getElementById('days').textContent   = plan.days;
+  document.getElementById('d-plan').textContent = plan.title;
+  document.getElementById('d-days').textContent = plan.days + ' days from activation';
+  document.getElementById('d-store').textContent =
+    store ? (STORES[store] || store) : 'Online';
+  if (store) document.getElementById('tag').textContent = 'In-store offer';
+
+  console.log('[nimbus] offer page loaded', { plan: q.get('plan'), store: store, href: location.href });
 </script>
 </body>
 </html>
