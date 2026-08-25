@@ -1,11 +1,11 @@
 {
   "appclips": {
-    "apps": ["TEAMID.com.lotusflare.appclippoc.Clip"]
+    "apps": ["SJXJJQNG35.com.lotusflare.appclippoc.Clip"]
   },
   "applinks": {
     "details": [
       {
-        "appIDs": ["TEAMID.com.lotusflare.appclippoc"],
+        "appIDs": ["SJXJJQNG35.com.lotusflare.appclippoc"],
         "components": [
           {
             "/": "/appclip-poc/p*",
