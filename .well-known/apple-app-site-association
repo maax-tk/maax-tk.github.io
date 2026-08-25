@@ -1,0 +1,18 @@
+{
+  "appclips": {
+    "apps": ["TEAMID.com.lotusflare.appclippoc.Clip"]
+  },
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["TEAMID.com.lotusflare.appclippoc"],
+        "components": [
+          {
+            "/": "/appclip-poc/p*",
+            "comment": "Invocation URLs for the App Clip PoC. Once the full app is installed, the same URL must open the app instead of the clip."
+          }
+        ]
+      }
+    ]
+  }
+}

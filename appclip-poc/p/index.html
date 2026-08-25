@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invocation URL — App Clip PoC</title>
+<meta name="apple-itunes-app" content="app-clip-bundle-id=com.lotusflare.appclippoc.Clip, app-clip-display=card">
+<style>
+  :root{color-scheme:light dark}
+  body{margin:0;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#212529;color:#f8f9fa}
+  .wrap{padding:28px 20px 60px;max-width:640px;margin:0 auto}
+  h1{font-size:26px;margin:0 0 6px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;word-break:break-all}
+  .box{background:#343a40;border-radius:12px;padding:16px;margin:18px 0}
+  .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.6}
+  a{color:#74c0fc}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>This is an <em>invocation</em> URL.</h1>
+  <p>Its job is to identify an App Clip and carry context into it. It is never rendered by the
+     clip. You are seeing this page because you opened the URL in a browser rather than through
+     an App Clip invocation.</p>
+
+  <div class="box">
+    <div class="k">This URL</div><code id="href"></code>
+  </div>
+
+  <p>For a real invocation, iOS must first agree that this domain may launch that clip. That
+     agreement is the file at
+     <a href="/.well-known/apple-app-site-association"><code>/.well-known/apple-app-site-association</code></a>,
+     which names <code>&lt;TeamID&gt;.com.lotusflare.appclippoc.Clip</code>.</p>
+
+  <p>The page the clip actually renders is a different URL entirely:
+     <a id="content" href="/appclip-poc/">/appclip-poc/</a></p>
+</div>
+<script>
+  document.getElementById('href').textContent = location.href;
+  var id = new URLSearchParams(location.search).get('id');
+  if (id) document.getElementById('content').href = '/appclip-poc/?id=' + encodeURIComponent(id);
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Netlify / Cloudflare Pages honour this file. GitHub Pages IGNORES it -- it is
+# kept here so the exact same web/ directory can be dropped on Netlify without
+# edits, and so the intended content type is recorded next to the file it
+# applies to. See docs/FINDINGS.md for the Content-Type GitHub Pages actually
+# serves.
+/.well-known/apple-app-site-association
+  Content-Type: application/json
+  Cache-Control: public, max-age=300
