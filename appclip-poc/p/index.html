@@ -107,7 +107,10 @@
     'travel-25gb': { title:'Travel 25 GB', gb:25,  days:30, price:'€24.99' },
     'daypass':     { title:'Day Pass',     gb:'∞', days:1,  price:'€3.49'  }
   };
-  var STORES = { AMS:'Schiphol T2', LHR:'Heathrow T5', JNB:'OR Tambo A', DXB:'Dubai T3' };
+  var STORES = {
+    amsterdam:'Amsterdam Airport', london:'London Heathrow',
+    dubai:'Dubai Airport', johannesburg:'Johannesburg'
+  };
 
   var plan  = CATALOGUE[q.get('plan') || q.get('id')] || CATALOGUE['travel-10gb'];
   var store = q.get('store');
