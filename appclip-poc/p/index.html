@@ -2,43 +2,127 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Invocation URL — App Clip PoC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nimbus Mobile — Travel data plans</title>
+
+<!-- Safari Smart App Banner + App Clip card. On an iPhone where the clip is
+     published and this domain is associated, Safari offers to launch the App
+     Clip from this very page. Apple requires ALL of: the website associated
+     with the clip, this tag, a configured default App Clip experience, and a
+     published app version. None of that exists for this PoC, so the banner
+     cannot appear here. -->
 <meta name="apple-itunes-app" content="app-clip-bundle-id=com.lotusflare.appclippoc.Clip, app-clip-display=card">
+
 <style>
-  :root{color-scheme:light dark}
-  body{margin:0;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#212529;color:#f8f9fa}
-  .wrap{padding:28px 20px 60px;max-width:640px;margin:0 auto}
-  h1{font-size:26px;margin:0 0 6px}
-  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;word-break:break-all}
-  .box{background:#343a40;border-radius:12px;padding:16px;margin:18px 0}
-  .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.6}
-  a{color:#74c0fc}
+  :root{ --ink:#0B0E1C; --ink-2:#141A31; --line:#232B4A;
+         --accent:#FF6547; --text:#EEF1FA; --muted:#8E98B8 }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--text);
+       font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
+  a{color:var(--accent)}
+
+  header{display:flex;align-items:center;justify-content:space-between;
+         padding:14px 18px;border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px}
+  .logo{width:24px;height:24px;border-radius:7px;background:var(--accent);
+        display:grid;place-items:center;font-size:13px}
+  nav{display:flex;gap:16px;font-size:13px;color:var(--muted)}
+  nav span:first-child{color:var(--text)}
+
+  .wrap{padding:24px 18px 40px;max-width:680px;margin:0 auto}
+  .tag{display:inline-block;background:rgba(255,101,71,.15);color:var(--accent);
+       font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+       padding:5px 10px;border-radius:999px}
+  h1{font-size:32px;line-height:1.1;margin:12px 0 8px;letter-spacing:-.02em}
+  .lede{color:var(--muted);margin:0 0 20px}
+
+  .buy{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .price{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+  .price b{font-size:34px;letter-spacing:-.02em}
+  .price span{color:var(--muted);font-size:13px}
+  .cta{display:block;width:100%;text-align:center;background:var(--accent);color:#0B0E1C;
+       font-weight:800;font-size:16px;padding:14px;border-radius:12px;text-decoration:none}
+  .alt{display:block;text-align:center;color:var(--muted);font-size:13px;margin-top:12px}
+
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+     margin:30px 0 10px;font-weight:700}
+  .row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;
+       border-bottom:1px solid var(--line);font-size:14px}
+  .row span:first-child{color:var(--muted)}
+
+  .note{margin-top:34px;border-left:3px solid var(--accent);background:var(--ink-2);
+        padding:14px 16px;border-radius:0 10px 10px 0;font-size:13px;color:var(--muted)}
+  .note b{color:var(--text)}
+  footer{color:var(--muted);font-size:12px;margin-top:26px;line-height:1.6}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>This is an <em>invocation</em> URL.</h1>
-  <p>Its job is to identify an App Clip and carry context into it. It is never rendered by the
-     clip. You are seeing this page because you opened the URL in a browser rather than through
-     an App Clip invocation.</p>
 
-  <div class="box">
-    <div class="k">This URL</div><code id="href"></code>
+<header>
+  <div class="brand"><span class="logo">📶</span> Nimbus</div>
+  <nav><span>Plans</span><span>Coverage</span><span>Support</span></nav>
+</header>
+
+<div class="wrap">
+  <span class="tag" id="tag">Travel eSIM</span>
+  <h1 id="title">Travel 10 GB</h1>
+  <p class="lede">Data in 40+ countries, activated the moment you land. No contract, no roaming bill.</p>
+
+  <div class="buy">
+    <div class="price">
+      <b id="price">€12.99</b>
+      <span><span id="gb">10</span> GB · valid <span id="days">30</span> days</span>
+    </div>
+    <a class="cta" href="#" onclick="return false">Buy now</a>
+    <span class="alt" id="store-line">Available online and in Nimbus stores</span>
   </div>
 
-  <p>For a real invocation, iOS must first agree that this domain may launch that clip. That
-     agreement is the file at
-     <a href="/.well-known/apple-app-site-association"><code>/.well-known/apple-app-site-association</code></a>,
-     which names <code>&lt;TeamID&gt;.com.lotusflare.appclippoc.Clip</code>.</p>
+  <h2>What's included</h2>
+  <div class="row"><span>Plan</span><span id="d-plan">Travel 10 GB</span></div>
+  <div class="row"><span>Validity</span><span id="d-days">30 days from activation</span></div>
+  <div class="row"><span>Network</span><span>5G / LTE, partner networks</span></div>
+  <div class="row"><span>Tethering</span><span>Included</span></div>
+  <div class="row"><span>Activation</span><span>Instant, via eSIM</span></div>
 
-  <p>The page the clip actually renders is a different URL entirely:
-     <a id="content" href="/appclip-poc/">/appclip-poc/</a></p>
+  <!-- The point worth making, made quietly and at the end rather than as a
+       page that explains itself. -->
+  <div class="note">
+    <b>Note for the PoC.</b> This page is the <b>invocation URL</b>. On an iPhone where the App Clip
+    is published and this domain is associated, iOS intercepts this URL and launches the App Clip
+    instead of loading this page — so an invocation URL should always be a real, working web page,
+    because it is the fallback for Android, desktop, and anyone without the clip.
+  </div>
+
+  <footer>
+    Nimbus Mobile is a fictional operator used for an engineering proof of concept.
+    Prices include VAT. Coverage depends on partner network availability.
+  </footer>
 </div>
+
 <script>
-  document.getElementById('href').textContent = location.href;
-  var id = new URLSearchParams(location.search).get('id');
-  if (id) document.getElementById('content').href = '/appclip-poc/?id=' + encodeURIComponent(id);
+  var q = new URLSearchParams(location.search);
+  var CATALOGUE = {
+    'travel-3gb':  { title:'Travel 3 GB',  gb:3,   days:7,  price:'€5.99'  },
+    'travel-10gb': { title:'Travel 10 GB', gb:10,  days:30, price:'€12.99' },
+    'travel-25gb': { title:'Travel 25 GB', gb:25,  days:30, price:'€24.99' },
+    'daypass':     { title:'Day Pass',     gb:'∞', days:1,  price:'€3.49'  }
+  };
+  var STORES = { AMS:'Schiphol T2', LHR:'Heathrow T5', JNB:'OR Tambo A', DXB:'Dubai T3' };
+
+  var plan  = CATALOGUE[q.get('plan') || q.get('id')] || CATALOGUE['travel-10gb'];
+  var store = q.get('store');
+
+  document.getElementById('title').textContent  = plan.title;
+  document.getElementById('price').textContent  = plan.price;
+  document.getElementById('gb').textContent     = plan.gb;
+  document.getElementById('days').textContent   = plan.days;
+  document.getElementById('d-plan').textContent = plan.title;
+  document.getElementById('d-days').textContent = plan.days + ' days from activation';
+  if (store) {
+    document.getElementById('tag').textContent = 'In-store offer';
+    document.getElementById('store-line').textContent =
+      'Scanned at ' + (STORES[store] || store);
+  }
 </script>
 </body>
 </html>
