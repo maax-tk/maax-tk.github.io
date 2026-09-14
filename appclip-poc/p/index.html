@@ -126,6 +126,21 @@
     document.getElementById('store-line').textContent =
       'Scanned at ' + (STORES[store] || store);
   }
+
+  // A SIM-verification link (scope=...) uses this same path so the same AASA
+  // entry covers it. Without the clip, the fallback is to say what it was for.
+  if (q.get('scope')) {
+    document.getElementById('tag').textContent = 'Number verification';
+    document.getElementById('title').textContent = 'Verify with your SIM';
+    document.querySelector('.lede').textContent =
+      (q.get('app') || 'An app') + ' asked your mobile operator to confirm your number. ' +
+      'On an iPhone with the App Clip published, this link opens the clip instead of this page.';
+    document.querySelector('.buy').style.display = 'none';
+    document.querySelector('.note').innerHTML =
+      '<b>Note for the PoC.</b> This is a verification invocation URL. See ' +
+      '<a href="../verify/">the launcher</a> for how it is built, and ' +
+      '<a href="../verify/callback/">the callback page</a> for where the result lands.';
+  }
 </script>
 </body>
 </html>
