@@ -34,6 +34,14 @@
   .note{margin-top:20px;border-left:3px solid var(--accent);background:#fff;padding:12px 14px;
         border-radius:0 10px 10px 0;font-size:13px;color:var(--muted)}
   .note b{color:var(--text)}
+  /* Recording mode (demo=1): a narration caption and a pulsing ring on the button. */
+  #cap{position:fixed;left:16px;right:16px;bottom:96px;background:rgba(0,0,0,.84);color:#fff;
+       border:1px solid rgba(255,101,71,.7);border-radius:14px;padding:12px 16px;font-size:15px;font-weight:600;
+       line-height:1.4;z-index:9}
+  .cta{position:relative}
+  .ring{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border:3px solid #fff;
+        border-radius:50%;pointer-events:none;animation:ring .9s ease-out infinite}
+  @keyframes ring{from{transform:scale(.8);opacity:1}to{transform:scale(1.5);opacity:0}}
 </style>
 </head>
 <body>
@@ -72,6 +80,7 @@
 (function () {
   var base = location.origin + '/appclip-poc/p/';
   var callback = location.origin + '/appclip-poc/verify/callback/';
+  var demo = new URLSearchParams(location.search).get('demo') === '1';
   function rand(n){ var a = new Uint8Array(n); crypto.getRandomValues(a); return Array.from(a, function(b){ return b.toString(16).padStart(2,'0'); }).join(''); }
   var state = rand(8), nonce = rand(16);
   function build(){
@@ -79,7 +88,7 @@
     var p = new URLSearchParams();
     p.set('scope', 'number-verification:verify');
     p.set('app', 'Acme');
-    p.set('callback', callback + '?phone=' + encodeURIComponent(phone));
+    p.set('callback', callback + '?phone=' + encodeURIComponent(phone) + (demo ? '&demo=1' : ''));
     p.set('state', state);
     p.set('nonce', nonce);
     p.set('phone', phone);
@@ -89,6 +98,17 @@
   }
   document.getElementById('phone').addEventListener('input', build);
   build();
+
+  if (demo) {
+    var cap = document.createElement('div'); cap.id = 'cap';
+    cap.textContent = "Acme's sign-in page, a website. Acme wants to confirm the user's number without an SMS code.";
+    document.body.appendChild(cap);
+    setTimeout(function () {
+      cap.textContent = "The user taps “Confirm with my SIM”. iOS opens Nimbus's App Clip from that link.";
+      var ring = document.createElement('span'); ring.className = 'ring';
+      document.getElementById('go').appendChild(ring);
+    }, 4000);
+  }
 })();
 </script>
 </body>
