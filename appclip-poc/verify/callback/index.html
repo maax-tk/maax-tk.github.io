@@ -3,40 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Acme — verification result</title>
-<!-- The requesting app's callback page. In the aggregator flow this URL is
-     baked into the signed app_info_jwt; the SDK opens it in Safari with the
-     response as a query parameter and then terminates the clip. This page is
-     what the requesting app's backend would receive and verify. -->
+<title>Acme — you're signed in</title>
+<!-- The requesting app's callback page. The operator's App Clip opens this
+     URL in Safari with the verification result as a query parameter — the
+     same hand-off the aggregator SDK performs before it terminates the clip.
+     Written for a viewer of a screen recording: the outcome first, the
+     story second, the technical material folded away at the bottom. -->
 <style>
   :root{ --bg:#F6F7FB; --card:#fff; --line:#E3E6F0; --text:#141A31; --muted:#6B7390;
-         --ok:#1B9E5A; --bad:#D6453D; --warn:#B7791F; --accent:#3D5AFE }
+         --ok:#1B9E5A; --bad:#D6453D; --warn:#8A5A00; --warnbg:#FFF3D6; --accent:#3D5AFE }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);
-       font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
+       font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
   header{padding:14px 18px;background:#fff;border-bottom:1px solid var(--line);
          display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px}
   .logo{width:24px;height:24px;border-radius:7px;background:var(--accent);color:#fff;
         display:grid;place-items:center;font-size:13px}
-  .wrap{padding:20px 18px 40px;max-width:720px;margin:0 auto}
-  .status{border-radius:16px;padding:18px;background:var(--card);border:1px solid var(--line);margin-bottom:16px}
-  .status h1{margin:0 0 6px;font-size:22px;letter-spacing:-.02em}
-  .status p{margin:0;color:var(--muted)}
-  .ok h1{color:var(--ok)} .bad h1{color:var(--bad)}
-  .pill{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-        padding:4px 9px;border-radius:999px;margin-bottom:10px}
-  .pill.warn{background:#FFF3DC;color:var(--warn)} .pill.ok{background:#E3F7EC;color:var(--ok)}
-  h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 0 8px;font-weight:700}
-  .kv{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .row{display:flex;gap:14px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px}
-  .row:last-child{border-bottom:0}
-  .row span:first-child{color:var(--muted);flex:0 0 150px}
-  .row code{word-break:break-all;font-size:12px}
-  pre{background:#0B0E1C;color:#EEF1FA;font-size:11px;line-height:1.45;padding:14px;border-radius:12px;
-      overflow:auto;white-space:pre-wrap;word-break:break-all;margin:0}
-  .note{margin-top:26px;border-left:3px solid var(--accent);background:#fff;padding:12px 14px;
-        border-radius:0 10px 10px 0;font-size:13px;color:var(--muted)}
-  .note b{color:var(--text)}
+  .wrap{padding:22px 18px 40px;max-width:680px;margin:0 auto}
+
+  .hero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 20px;text-align:center}
+  .hero .icon{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;font-size:32px}
+  .hero.ok .icon{background:#E3F7EC;color:var(--ok)} .hero.bad .icon{background:#FDE8E7;color:var(--bad)}
+  .hero.wait .icon{background:#EEF0FF;color:var(--accent)}
+  .hero h1{margin:0 0 6px;font-size:26px;letter-spacing:-.02em}
+  .hero .phone{font-size:20px;font-weight:800;margin:4px 0 8px}
+  .hero p{margin:0;color:var(--muted)}
+  .cta{display:block;width:100%;text-align:center;background:var(--accent);color:#fff;border:0;
+       font-weight:800;font-size:16px;padding:14px;border-radius:12px;text-decoration:none;margin-top:18px}
+
+  .banner{margin-top:14px;background:var(--warnbg);color:var(--warn);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.45}
+  .banner b{display:block;margin-bottom:2px}
+
+  h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:26px 0 10px;font-weight:700}
+  .steps{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .step{display:flex;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px;align-items:flex-start}
+  .step:last-child{border-bottom:0}
+  .tag{flex:0 0 auto;font-size:9px;font-weight:900;letter-spacing:.06em;padding:3px 7px;border-radius:999px;margin-top:3px}
+  .tag.real{background:#E3F7EC;color:var(--ok)} .tag.sim{background:#FFF0BF;color:var(--warn)}
+  .step small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+
+  details{margin-top:26px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+  summary{padding:12px 14px;font-weight:700;font-size:14px;cursor:pointer;color:var(--muted)}
+  .kv .row{display:flex;gap:14px;padding:9px 14px;border-top:1px solid var(--line);font-size:12.5px}
+  .kv .row span:first-child{color:var(--muted);flex:0 0 140px}
+  .kv .row code{word-break:break-all;font-size:11.5px}
+  pre{background:#0B0E1C;color:#EEF1FA;font-size:11px;line-height:1.45;padding:14px;margin:0;
+      overflow:auto;white-space:pre-wrap;word-break:break-all;border-radius:0 0 12px 12px}
+  .hidden{display:none}
   a{color:var(--accent)}
 </style>
 </head>
@@ -44,85 +57,117 @@
 <header><span class="logo">A</span> Acme <span style="color:var(--muted);font-weight:500;font-size:13px">· sign-in</span></header>
 
 <div class="wrap">
-  <div id="status" class="status"><h1>Waiting for a response…</h1><p>This page expects to be opened by the App Clip.</p></div>
-  <div id="detail"></div>
+  <div id="hero" class="hero wait">
+    <div class="icon">⏳</div>
+    <h1>Checking your proof…</h1>
+    <p>Acme is confirming the result with the operator.</p>
+  </div>
 
-  <div class="note">
-    <b>What this page is.</b> The <b>callback URL</b> of the app that asked for verification.
-    The App Clip opened it in Safari with the response in the <code>openID4VPCSPResponse</code>
-    query parameter — the exact hand-off the aggregator SDK performs before it calls <code>exit(0)</code>.
-    In production this page would post the response to the app's backend, which would send it to the
-    aggregator for verification against the operator. Nothing here is verified: there is no aggregator.
-    See <a href="../">the launcher</a> to start again.
+  <div id="after" class="hidden">
+    <div id="banner" class="banner"></div>
+    <h2>How it worked</h2>
+    <div id="steps" class="steps"></div>
+    <details id="tech">
+      <summary>Technical details</summary>
+      <div id="kv" class="kv"></div>
+      <pre id="raw"></pre>
+    </details>
+    <p style="font-size:13px;color:var(--muted);margin-top:22px">
+      <a href="../">Start again from Acme's sign-in page</a>
+    </p>
   </div>
 </div>
 
 <script>
 (function () {
   var q = new URLSearchParams(location.search);
-  var status = document.getElementById('status');
-  var detail = document.getElementById('detail');
+  var hero = document.getElementById('hero');
+  var after = document.getElementById('after');
+  var banner = document.getElementById('banner');
+  var steps = document.getElementById('steps');
 
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  function kv(rows){ return '<div class="kv">' + rows.map(function(r){ return '<div class="row"><span>'+esc(r[0])+'</span><code>'+esc(r[1])+'</code></div>'; }).join('') + '</div>'; }
   function b64url(s){ s = s.replace(/-/g,'+').replace(/_/g,'/'); while (s.length % 4) s += '='; return decodeURIComponent(escape(atob(s))); }
   function jwtPayload(jwt){ try { return JSON.parse(b64url(jwt.split('.')[1])); } catch (e) { return null; } }
-  function jwtHeader(jwt){ try { return JSON.parse(b64url(jwt.split('.')[0])); } catch (e) { return null; } }
+  function mask(p){ if (!p) return ''; var d = p.replace(/\D/g,''); if (d.length < 6) return p; return (p.charAt(0)==='+' ? '+'+d.slice(0,2) : d.slice(0,2)) + ' ••• ••• ' + d.slice(-4); }
+  function step(kind, text, sub){
+    return '<div class="step"><span class="tag ' + kind + '">' + (kind === 'real' ? 'REAL' : 'SIMULATED') + '</span>' +
+           '<div>' + esc(text) + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</div></div>';
+  }
+  function show(){ after.classList.remove('hidden'); }
 
+  var phone = mask(q.get('phone'));
+
+  // --- The user said "Not now" -------------------------------------------
   if (q.get('error')) {
-    status.className = 'status bad';
-    status.innerHTML = '<h1>Verification did not complete</h1><p>The App Clip reported an error.</p>';
-    detail.innerHTML = '<h2>Error</h2>' + kv([['error', q.get('error')], ['error_description', q.get('error_description') || ''], ['state', q.get('state') || '(none)']]);
+    hero.className = 'hero bad';
+    hero.innerHTML = '<div class="icon">✕</div><h1>Not verified</h1>' +
+      '<p>You didn\'t allow the check in the Nimbus App Clip. No problem — Acme will send you an SMS code instead.</p>' +
+      '<a class="cta" href="#" onclick="return false">Send me an SMS code</a>';
+    banner.innerHTML = '<b>Nothing was simulated on this path.</b> The App Clip told Acme you declined, exactly as the real product would.';
+    steps.innerHTML =
+      step('real', 'Acme asked for a number check and iOS opened the operator\'s App Clip.', 'Nothing was installed.') +
+      step('real', 'You tapped "Not now".') +
+      step('real', 'The App Clip returned to this page with a "declined" result.', 'Error code: ' + (q.get('error') || '') + ' · ' + (q.get('error_description') || ''));
+    document.getElementById('tech').remove();
+    show();
     return;
   }
 
   var raw = q.get('openID4VPCSPResponse');
-  if (!raw) return;
-
-  var env;
-  try { env = JSON.parse(raw); } catch (e) {
-    status.className = 'status bad';
-    status.innerHTML = '<h1>Unreadable response</h1><p>' + esc(e.message) + '</p>';
-    detail.innerHTML = '<pre>' + esc(raw) + '</pre>';
+  if (!raw) {
+    hero.className = 'hero bad';
+    hero.innerHTML = '<div class="icon">?</div><h1>Nothing to show yet</h1><p>This page expects to be opened by the Nimbus App Clip. <a href="../">Start from Acme\'s sign-in page.</a></p>';
     return;
   }
 
-  var vp = (env.data && env.data.vp_token) || {};
+  var env = null;
+  try { env = JSON.parse(raw); } catch (e) {}
+  var vp = (env && env.data && env.data.vp_token) || {};
   var credId = Object.keys(vp)[0];
   var creds = vp[credId] || [];
-  var first = creds[0] || '';
-  var parts = first.split('~');
+  var parts = (creds[0] || '').split('~');
   var issuer = jwtPayload(parts[0] || '') || {};
   var kb = jwtPayload(parts[1] || '') || {};
   var placeholder = kb.carrier_token_is_placeholder === true;
 
-  status.className = 'status ok';
-  status.innerHTML =
-    '<span class="pill ' + (placeholder ? 'warn' : 'ok') + '">' + (placeholder ? 'placeholder token' : 'real carrier token') + '</span>' +
-    '<h1>Response received</h1>' +
-    '<p>' + (placeholder
-      ? 'The App Clip could not get a carrier token from iOS (no operator entitlement) and sent the placeholder the aggregator SDK uses in test mode. A real aggregator would reject this.'
-      : 'The App Clip obtained a carrier token from iOS. Only an operator-entitled app can do this.') + '</p>';
+  // --- Success: a short "checking" beat, then the outcome ----------------
+  setTimeout(function () {
+    hero.className = 'hero ok';
+    hero.innerHTML = '<div class="icon">✓</div><h1>Your number is confirmed</h1>' +
+      (phone ? '<div class="phone">' + esc(phone) + '</div>' : '') +
+      '<p>Confirmed through Nimbus, your mobile operator. No SMS code needed.</p>' +
+      '<a class="cta" href="#" onclick="return false">Continue to Acme</a>';
 
-  detail.innerHTML =
-    '<h2>Hand-off</h2>' + kv([
+    banner.innerHTML = placeholder
+      ? '<b>Simulated result.</b> In the real product, Acme\'s server sends this proof to Aduna, who checks it with the operator and answers yes or no. There is no Aduna in this demo, and the proof carries a test value instead of a real SIM proof, because Apple gives the real one only to the operator\'s own app. The green result above is what the user would see; it is not a real verification.'
+      : '<b>Real SIM proof received.</b> The App Clip obtained a carrier token from iOS. Only an operator-entitled app can do this. Aduna\'s verification of it is still simulated here.';
+
+    steps.innerHTML =
+      step('real', 'Acme asked for a number check and iOS opened Nimbus\'s App Clip.', 'Nothing was installed on the phone.') +
+      step('real', 'You allowed the check.') +
+      step('real', 'The App Clip asked iOS for the SIM proof — the step the Aduna SDK performs.', 'iOS said no: Apple gives that proof only to the operator\'s own published app.') +
+      step(placeholder ? 'sim' : 'real', placeholder ? 'A test proof was used instead.' : 'iOS provided the SIM proof.', placeholder ? 'Same test value the Aduna SDK uses in its own test mode.' : '') +
+      step('real', 'The proof was sealed on the phone and returned to this page.', 'This page is the "callback": the address Acme gave the operator to return the result to.') +
+      step('sim', 'Acme checks the proof with Aduna, who checks it with the operator.', 'There is no Aduna in this demo, so this answer is assumed.') +
+      step('sim', 'The link that started the flow was not signed by Aduna.', 'The real Aduna SDK only accepts links Aduna signs.');
+
+    document.getElementById('kv').innerHTML = [
       ['state', q.get('state') || '(none)'],
-      ['protocol', env.protocol || ''],
+      ['protocol', (env && env.protocol) || ''],
       ['credential id', credId || ''],
-      ['credentials', creds.length + ' (one per SIM)'],
-      ['response size', raw.length + ' chars']
-    ]) +
-    '<h2>Key-binding JWT (typ ' + esc((jwtHeader(parts[1]||'')||{}).typ || '?') + ')</h2>' + kv([
-      ['aud', kb.aud || ''], ['nonce', kb.nonce || ''], ['state', kb.state || '(none)'],
+      ['audience (aud)', kb.aud || ''],
+      ['nonce', kb.nonce || ''],
       ['carrier_token', kb.carrier_token || kb.encrypted_credential || ''],
-      ['placeholder', String(placeholder)], ['sd_hash', kb.sd_hash || ''], ['iat', kb.iat ? new Date(kb.iat*1000).toISOString() : '']
-    ]) +
-    '<h2>Issuer JWT (typ ' + esc((jwtHeader(parts[0]||'')||{}).typ || '?') + ')</h2>' + kv([
-      ['iss', issuer.iss || ''], ['vct', JSON.stringify(issuer.vct || [])],
-      ['exp', issuer.exp ? new Date(issuer.exp*1000).toISOString() : ''],
-      ['cnf.jwk', JSON.stringify((issuer.cnf||{}).jwk || {})]
-    ]) +
-    '<h2>Raw envelope</h2><pre>' + esc(JSON.stringify(env, null, 2)) + '</pre>';
+      ['placeholder', String(placeholder)],
+      ['issuer', issuer.iss || ''],
+      ['expires', issuer.exp ? new Date(issuer.exp * 1000).toISOString() : ''],
+      ['response size', raw.length + ' chars']
+    ].map(function (r) { return '<div class="row"><span>' + esc(r[0]) + '</span><code>' + esc(r[1]) + '</code></div>'; }).join('');
+    document.getElementById('raw').textContent = env ? JSON.stringify(env, null, 2) : raw;
+
+    show();
+  }, 1800);
 })();
 </script>
 </body>
